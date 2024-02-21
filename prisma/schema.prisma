@@ -10,10 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+  Post     Post[]
+}
+
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  description   String?
-  priority  Int
-  Flag      Boolean @default(false)
+  id          Int     @id @default(autoincrement())
+  user        User    @relation(fields: [userId], references: [id]) // fields: [userId] = Profile.userId, references: [User.id]
+  userId      Int
+  title       String
+  description String?
+  priority    Int?
+  flag        Boolean @default(false)
 }
