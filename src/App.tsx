@@ -1,12 +1,15 @@
 import useUser from "./hooks/useUser";
 
 function App() {
-  const { session, signOut, signInWithGithub } = useUser();
+  const { session, user, signOut, signInWithGithub } = useUser();
 
   return (
     <>
       {session ? (
-        <button onClick={() => signOut()}>サインアウト</button>
+        <div>
+          <p>Hello, {user && user.fullname}</p>
+          <button onClick={() => signOut()}>ログアウト</button>
+        </div>
       ) : (
         <button onClick={() => signInWithGithub()}>GitHubでログイン</button>
       )}
