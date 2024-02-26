@@ -1,29 +1,16 @@
-import { useEffect, useState } from "react";
-
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  `${import.meta.env.VITE_SUPABASE_URL}`,
-  `${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-);
+import useUser from "./hooks/useUser";
 
 function App() {
-  const [countries, setCountries] = useState<any[] | null>([]);
-
-  useEffect(() => {
-    getCountries();
-  }, []);
-
-  async function getCountries() {
-    const { data } = await supabase.from("countries").select();
-    setCountries(data);
-  }
+  const { session, signOut, signInWithGithub } = useUser();
 
   return (
-    <ul>
-      {countries &&
-        countries.map((country) => <li key={country.name}>{country.name}</li>)}
-    </ul>
+    <>
+      {session ? (
+        <button onClick={() => signOut()}>サインアウト</button>
+      ) : (
+        <button onClick={() => signInWithGithub()}>GitHubでログイン</button>
+      )}
+    </>
   );
 }
 
